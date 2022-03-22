@@ -602,6 +602,10 @@ tasks.named("docsTest") { task ->
             excludeTestsMatching "org.gradle.docs.samples.*.incubating-java-modules-*.sample"
             excludeTestsMatching 'org.gradle.docs.samples.*.snippet-java-library-module*.sample'
         }
+        // Android requires Java 11+
+        if (!javaVersion.java11Compatible) {
+            excludeTestsMatching "org.gradle.docs.samples.*.building-android-*.sample"
+        }
     }
 }
 
