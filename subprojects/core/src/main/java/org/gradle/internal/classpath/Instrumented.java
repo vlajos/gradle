@@ -50,6 +50,10 @@ public class Instrumented {
         }
 
         @Override
+        public void systemPropertiesCleared(String consumer) {
+        }
+
+        @Override
         public void envVariableQueried(String key, @Nullable String value, String consumer) {
         }
 
@@ -82,6 +86,9 @@ public class Instrumented {
                     break;
                 case "setProperty":
                     array.array[callSite.getIndex()] = new SetSystemPropertyCallSite(callSite);
+                    break;
+                case "setProperties":
+                    array.array[callSite.getIndex()] = new SetSystemPropertiesCallSite(callSite);
                     break;
                 case "clearProperty":
                     array.array[callSite.getIndex()] = new ClearSystemPropertyCallSite(callSite);
@@ -153,6 +160,11 @@ public class Instrumented {
             public void onRemove(Object key) {
                 listener().systemPropertyRemoved(key, consumer);
             }
+
+            @Override
+            public void onClear() {
+                listener().systemPropertiesCleared(consumer);
+            }
         });
     }
 
@@ -170,6 +182,12 @@ public class Instrumented {
         systemPropertyQueried(key, oldValue, consumer);
         listener().systemPropertyRemoved(key, consumer);
         return oldValue;
+    }
+
+    public static void setSystemProperties(Properties properties, String consumer) {
+        listener().systemPropertiesCleared(consumer);
+        properties.forEach((k, v) -> listener().systemPropertyChanged(k, v, consumer));
+        System.setProperties(properties);
     }
 
     // Called by generated code.
@@ -424,6 +442,13 @@ public class Instrumented {
         void systemPropertyRemoved(Object key, String consumer);
 
         /**
+         * Invoked when all system properties are removed.
+         *
+         * @param consumer the name of the class that is removing the system properties
+         */
+        void systemPropertiesCleared(String consumer);
+
+        /**
          * Invoked when the code reads the environment variable.
          *
          * @param key the name of the variable
@@ -557,6 +582,33 @@ public class Instrumented {
                 return setSystemProperty(convertToString(arg1), convertToString(arg2), array.owner.getName());
             } else {
                 return super.callStatic(receiver, arg1, arg2);
+            }
+        }
+    }
+
+    private static class SetSystemPropertiesCallSite extends AbstractCallSite {
+        public SetSystemPropertiesCallSite(CallSite callSite) {
+            super(callSite);
+        }
+
+
+        @Override
+        public Object call(Object receiver, Object arg1) throws Throwable {
+            if (receiver.equals(System.class) && arg1 instanceof Properties) {
+                setSystemProperties((Properties) arg1, array.owner.getName());
+                return null;
+            } else {
+                return super.call(receiver, arg1);
+            }
+        }
+
+        @Override
+        public Object callStatic(Class receiver, Object arg1) throws Throwable {
+            if (receiver.equals(System.class) && arg1 instanceof Properties) {
+                setSystemProperties((Properties) arg1, array.owner.getName());
+                return null;
+            } else {
+                return super.callStatic(receiver, arg1);
             }
         }
     }
