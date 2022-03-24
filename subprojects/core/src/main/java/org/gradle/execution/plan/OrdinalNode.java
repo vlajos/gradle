@@ -16,7 +16,6 @@
 
 package org.gradle.execution.plan;
 
-import org.gradle.api.Action;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.tasks.NodeExecutionContext;
 import org.gradle.internal.resources.ResourceLock;
@@ -34,7 +33,7 @@ import java.util.List;
  * ordinality even if the destroyers are delayed waiting on dependencies (and vice versa).
  */
 public class OrdinalNode extends Node implements SelfExecutingNode {
-    public enum Type { DESTROYER, PRODUCER }
+    public enum Type {DESTROYER, PRODUCER}
 
     private final Type type;
     private final int ordinal;
@@ -51,7 +50,8 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
     }
 
     @Override
-    public void resolveDependencies(TaskDependencyResolver dependencyResolver, Action<Node> processHardSuccessor) { }
+    public void resolveDependencies(TaskDependencyResolver dependencyResolver) {
+    }
 
     @Nullable
     @Override
@@ -82,7 +82,8 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
     }
 
     @Override
-    public void execute(NodeExecutionContext context) { }
+    public void execute(NodeExecutionContext context) {
+    }
 
     public Type getType() {
         return type;
