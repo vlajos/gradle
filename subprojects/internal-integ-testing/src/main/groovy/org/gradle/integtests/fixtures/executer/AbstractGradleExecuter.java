@@ -59,6 +59,7 @@ import org.gradle.test.fixtures.file.TestDirectoryProvider;
 import org.gradle.test.fixtures.file.TestFile;
 import org.gradle.testfixtures.internal.NativeServicesTestFixture;
 import org.gradle.util.GradleVersion;
+import org.gradle.util.TestPrecondition;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.util.internal.CollectionUtils;
 import org.gradle.util.internal.GFileUtils;
@@ -571,6 +572,9 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
         buildJvmOpts.add("-ea");
 
         if (isDebug()) {
+            if (System.getenv().containsKey("CI")) {
+                throw new IllegalArgumentException("Builds cannot be started with the debugger enabled on CI. This will cause tests to hang forever. Remove the call to startBuildProcessInDebugger().");
+            }
             buildJvmOpts.addAll(DEBUG_ARGS);
         }
         if (isProfile()) {
