@@ -36,11 +36,12 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
     public enum Type {DESTROYER, PRODUCER}
 
     private final Type type;
-    private final int ordinal;
+    private final OrdinalGroup ordinal;
 
-    public OrdinalNode(Type type, int ordinal) {
+    public OrdinalNode(Type type, OrdinalGroup ordinal) {
         this.type = type;
         this.ordinal = ordinal;
+        setGroup(ordinal);
     }
 
     @Nullable
@@ -73,7 +74,7 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
     @Override
     // TODO is there a better term to use here than "task group"
     public String toString() {
-        return type.name().toLowerCase() + " locations for task group " + ordinal;
+        return type.name().toLowerCase() + " locations for " + getGroup();
     }
 
     @Override
@@ -89,7 +90,7 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
         return type;
     }
 
-    public int getOrdinal() {
+    public OrdinalGroup getOrdinalGroup() {
         return ordinal;
     }
 }
