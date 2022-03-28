@@ -16,6 +16,7 @@ We would like to thank the following community members for their contributions t
 [Vladimir Sitnikov](https://github.com/vlsi),
 [Roland Weisleder](https://github.com/rweisleder),
 [Konstantin Gribov](https://github.com/grossws),
+[David Op de Beeck](https://github.com/DavidOpDeBeeck),
 [aSemy](https://github.com/aSemy),
 [Rene Groeschke](https://github.com/breskeby)
 [Jonathan Leitschuh](https://github.com/JLLeitschuh),
@@ -161,6 +162,16 @@ buildFile: /path/to/project/build.gradle
 BUILD SUCCESSFUL in 550ms
 1 actionable task: 1 executed 
 ```
+
+### Run a single PMD task on multiple threads
+
+[PMD](https://pmd.github.io/) is a quality analysis tool that runs on the Java source files of your project.
+
+With this version of Gradle, the [`thread` parameter](https://pmd.github.io/latest/pmd_userdocs_tools_ant.html#parameters) it offers is now exposed through the PMD extension and tasks.
+This allows configuration of PMD to run its analysis on more than one thread.
+Note that this setting is independent of the [number of workers](userguide/performance.html#parallel_execution) used by Gradle.
+
+See the [documentation](dsl/org.gradle.api.plugins.quality.PmdExtension.html#org.gradle.api.plugins.quality.PmdExtension:threads) for more information.
 
 <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ADD RELEASE FEATURES ABOVE
