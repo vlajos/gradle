@@ -14,19 +14,12 @@ pluginManagement {
                 includeVersionByRegex("com.gradle.internal.test-selection", "com.gradle.internal.test-selection.gradle.plugin", rcAndMilestonesPattern)
             }
         }
-        maven {
-            name = "Kotlin EAP repository"
-            url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap/")
-            content {
-                includeVersionByRegex("org.jetbrains.kotlin", "kotlin-.*", "1.7.0-dev-1904")
-            }
-        }
         gradlePluginPortal()
     }
 }
 
 plugins {
-    id("com.gradle.enterprise").version("3.8.1")
+    id("com.gradle.enterprise").version("3.9")
     id("io.github.gradle.gradle-enterprise-conventions-plugin").version("0.7.6")
     id("gradlebuild.base.allprojects")
     id("com.gradle.enterprise.test-distribution").version("2.2.3") // Sync with `build-logic/build-platform/build.gradle.kts`
@@ -169,7 +162,6 @@ include("soak")
 include("smoke-test")
 include("performance")
 include("build-scan-performance")
-include("configuration-cache-report")
 
 rootProject.name = "gradle"
 
