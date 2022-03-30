@@ -24,7 +24,6 @@ import org.gradle.internal.resources.ResourceLock;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.util.stream.StreamSupport.stream;
@@ -58,28 +57,7 @@ public class OrdinalNode extends Node implements SelfExecutingNode {
     public void rethrowNodeFailure() { }
 
     @Override
-    public void prepareForExecution() { }
-
-    @Override
     public void resolveDependencies(TaskDependencyResolver dependencyResolver, Action<Node> processHardSuccessor) { }
-
-    @Override
-    public Set<Node> getFinalizers() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public void resolveMutations() { }
-
-    @Override
-    public boolean isPublicNode() {
-        return false;
-    }
-
-    @Override
-    public boolean requiresMonitoring() {
-        return false;
-    }
 
     @Nullable
     @Override
